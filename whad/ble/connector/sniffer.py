@@ -127,15 +127,17 @@ class Sniffer(BLE, EventsManager):
             channel_map = channel_map
         )
         self.trigger_event(SynchronizationEvent(self.__connection))
+        chan_map = self.__connection.channel_map
+        chan_map_hex = chan_map.value.hex() if hasattr(chan_map, 'value') else (chan_map.hex() if chan_map else "00")
         logger.info(("Connection synchronized -> access_address=0x%08x,"
-                     " crc_init=0x%06x, hop_interval=%d (%d us)"
+                     " crc_init=0x%06x, hop_interval=%d (%d us), "
                      "hop_increment=%d, channel_map=0x%s"),
                     self.__connection.access_address,
                     self.__connection.crc_init,
                     self.__connection.hop_interval,
                     self.__connection.hop_interval*1250,
                     self.__connection.hop_increment,
-                    self.__connection.channel_map.value.hex())
+                    chan_map_hex)
 
     def on_desynchronized(self, access_address=None):
         """Desynchronization callback

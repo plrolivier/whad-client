@@ -41,13 +41,15 @@ class SynchronizationEvent(SniffingEvent):
     def message(self):
         """Readable representation of this event
         """
+        chan_map = self.synchronized_connection.channel_map
+        chan_map_hex = chan_map.value.hex() if hasattr(chan_map, 'value') else (chan_map.hex() if chan_map else "00")
         return (
             f"access_address=0x{self.synchronized_connection.access_address:08x}, "
             f"crc_init=0x{self.synchronized_connection.crc_init:06x}, "
             f"hop_interval={self.synchronized_connection.hop_interval} "
             f"({self.synchronized_connection.hop_interval*1250} us), "
             f"hop_increment={self.synchronized_connection.hop_increment}, "
-            f"channel_map=0x{self.synchronized_connection.channel_map.value.hex()}"
+            f"channel_map=0x{chan_map_hex}"
         )
 
 
